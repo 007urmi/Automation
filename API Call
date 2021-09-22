@@ -2,6 +2,8 @@ import requests
 import pandas as pd
 from csv import DictReader
 import time
+import os
+import glob
 from func_timeout import func_timeout, FunctionTimedOut
 
 import logging
@@ -16,7 +18,7 @@ else:
     Underserved_data = pd.read_excel(Underserved_folder_path)
 
 Underserved_data["GEOID10"] = Underserved_data["GEOID10"].values.astype(str)
-
+CountyFips = Underserved_data["GEOID10"].str[:5]
 count = 1
 total_api_calls = len(Underserved_data)
 api_time_out_secs = 60
@@ -40,5 +42,14 @@ for cb in Underserved_data["GEOID10"]:
         if count == api_limit:
             time.sleep(api_time_out_secs)
             api_limit = api_limit + 10
-    print('Iteration : {}'.format(count))
+            logging.info("Downloaded 10CBs Fabric Data, Please wait")
+    logging.info("Downloaded data for {}".format(parameters['cb']))
     count += 1
+
+file_path = "C://Users//urmimala.poddar//Documents//CQA Data//Automated//MO_Location"
+location_data_path = "C://Users//urmimala.poddar//Documents//CQA Data//{}{}".format("locations_Data_MO_Location",
+                                                                                        ".csv")
+output_files = glob.glob(os.path.join(file_path, CountyFips.iloc[0] + "*.csv"))
+df_from_each_file = (pd.read_csv(f, sep=',') for f in output_files)
+df_merged = pd.concat(df_from_each_file, ignore_index=True)
+df_merged.to_csv(location_data_path)
