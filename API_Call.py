@@ -12,7 +12,8 @@ import logging
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s:%(levelname)s:%(message)s')
 
-file_name = raw_input("Enter the file name with extension:")
+file_name = int(input("Enter the file name with extension:"))
+file_name = str(file_name)
 name = file_name.split('.')
 if name[1] == 'csv':
     Underserved_folder_path = 'C://Users//urmimala.poddar//Desktop//KY_Wireless CBs_7 Counties//{}.csv'.format(name[0])
