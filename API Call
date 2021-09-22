@@ -51,6 +51,6 @@ for cb in Underserved_data["GEOID10"]:
             time.sleep(api_time_out_secs)
             api_limit = api_limit + 10
 
-    logging.info('Downloaded data for {}'.format(parameters['cb']))
+    print('Downloaded data for {}'.format(parameters['cb']))
     count += 1
 
